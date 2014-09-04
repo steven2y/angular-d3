@@ -1,8 +1,7 @@
 define([
-    'angular'
+    'angular',
+    './main/main'
 ], function (angular) {
-
-    angular.module('main', []);
 
     angular.module('myApp', [
         'main',

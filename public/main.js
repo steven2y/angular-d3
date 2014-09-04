@@ -3,7 +3,8 @@ require.config({
     paths: {
         jquery: 'vendor/jquery/dist/jquery',
         angular: 'vendor/angular/angular',
-        'angular-route': 'vendor/angular-route/angular-route'
+        'angular-route': 'vendor/angular-route/angular-route',
+        d3: 'vendor/d3/d3'
     },
     shim: {
         angular: {
