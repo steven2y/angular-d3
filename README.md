@@ -1,14 +1,13 @@
-angular-boilerplate-ya
+angular-d3
 ======================
 
-Yep another angular boiler plate with tdd and bdd.  As I am a fan of TDD, it also includes sample testing of a controller and BDD cucumber js testing via protractor.
-Also it was good excercise to muck around with AngularJs and RequireJS.
+This is a project just to play around with D3 and angular.
 
-The structure is loosely based on the fractal hierarchy published here 
+Currently the project only consist of one example
 
-https://docs.google.com/document/d/1XXMvReO8-Awi1EZXAXS4PzDzdNvV6pGcuaF4Q9821Es/pub
-
-Here the views/controllers/services are grouped together with their own components.  Instead of having generic controller, view and service dirs.
+Word Graph
+-----------
+It will take a sentence and construct a graph connecting all the words.  
 
 
 
@@ -63,6 +62,7 @@ This projects contains
 
 * AngularJs
 * Bootstrap
+* D3
 * Jquery
 * grunt
 * bower
