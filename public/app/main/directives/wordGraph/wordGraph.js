@@ -13,7 +13,6 @@ define([
                         this.addWord(words[count], words[count - 1], nodes, links);
                         count++;
                         $timeout(function () {
-                            console.log('hehe');
                             tick(words, count++);
                         }, 500);
                     }
@@ -41,6 +40,7 @@ define([
             this.addWord = function(word, previousWord, nodes, links) {
 
                 var node = this.appendWordNode(word, nodes);
+                $scope.processed.push(word);
 
                 node.count++;
                 if (previousWord) {
@@ -59,29 +59,22 @@ define([
             return {
                 scope: {
                     sentence: '=',
-                    processed: '='
+                    processed: '=',
+                    height: '=',
+                    width:'='
                 },
                 restrict: 'E',
                 require: 'wordGraph',
                 replace: true,
                 controller: 'wordGraphController',
                 link: function (scope, element, attr, wgController) {
-                    var wordString = scope.sentence;
 
-                    wordString = wordString.replace(/\W+/g, " ");
-                    scope.words = wordString.toLowerCase();
-                    var wordStringArray = wordString.toLowerCase().split(' ');
-
-                    var width = 800,
-                        height = 600;
+                    var width = scope.width,
+                        height = scope.height;
 
                     var fill = d3.scale.category20();
 
-                    var force = d3.layout.force()
-                        .size([width, height])
-                        .linkDistance(30)
-                        .charge(-200)
-                        .on("tick", tick);
+
 
                     var svg = d3.select(element.find('svg')[0])
                         .attr("width", width)
@@ -92,10 +85,16 @@ define([
                         .attr("width", width)
                         .attr("height", height);
 
-                    var nodes = force.nodes(),
-                        links = force.links(),
+                    var nodes = [],
+                        links = [],
                         node = svg.selectAll(".node"),
                         link = svg.selectAll(".link");
+
+                    var force = d3.layout.force()
+                        .size([width, height])
+                        .linkDistance(30)
+                        .charge(-200)
+                        .on("tick", tick);
 
                     var cursor = svg.append("circle")
                         .attr("r", 30)
@@ -106,9 +105,6 @@ define([
                     function mousemove() {
                         cursor.attr("transform", "translate(" + d3.mouse(this) + ")");
                     }
-
-
-
 
                     function tick() {
                         //update locations
@@ -136,8 +132,9 @@ define([
                         link.enter().insert("line", ".node")
                             .attr("class", "link");
 
-                        node = node.data(nodes);
+                        link.exit().remove();
 
+                        node = node.data(nodes);
 
                         var containers = node.enter()
                             .append("g")
@@ -159,6 +156,8 @@ define([
                                 return d.word;
                             });
 
+                        node.exit().remove();
+
 
                         //refresh the circle size
                         node.selectAll('.circle')
@@ -169,8 +168,21 @@ define([
                         force.start();
                     }
 
-                    wgController.addWords(wordStringArray, nodes, links);
+                    scope.startProcess = function() {
 
+                        var wordString = scope.sentence.replace(/\W+/g, " "),
+                        wordStringArray = wordString.toLowerCase().split(' ');
+
+                        //reset nodes and links
+                        scope.processed = [];
+
+                        nodes = [];
+                        force.nodes(nodes);
+                        links = [];
+                        force.links(links);
+
+                        wgController.addWords(wordStringArray, nodes, links);
+                    };
                 },
                 templateUrl: 'app/main/directives/wordGraph/wordGraph.html'
             };
