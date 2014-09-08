@@ -29,6 +29,7 @@ bower install
 
 Unit Test
 ---------
+WIP
 ```
 grunt unit
 ```
@@ -36,6 +37,8 @@ grunt unit
 
 Feature Test
 ---------
+WIP
+
 You'll need to host the files somehow for this so I have set up a small node/express web server.  This will run it on localhost:3000
 
 ```
